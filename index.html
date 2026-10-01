@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>پایگاه مرجع مقالات و منابع پایان‌نامه MBA | محمد رضائی</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Vazirmatn", "sans-serif"],
+            },
+            colors: {
+              brand: {
+                50: "#f0f7ff",
+                100: "#e0effe",
+                200: "#bae0fd",
+                500: "#0284c7",
+                600: "#026597",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+              },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white"
+  >
+    <header
+      class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          <!-- Logo & Title -->
+          <div class="flex items-center gap-3 sm:gap-4">
+            <div
+              class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-brand-700 to-brand-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 shrink-0"
+            >
+              <i class="fa-solid fa-graduation-cap text-lg sm:text-xl"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h1
+                  class="font-bold text-slate-900 text-base sm:text-lg lg:text-xl leading-tight"
+                >
+                  پایگاه مقالات و منابع MBA
+                </h1>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+                دانشجو:
+                <span class="font-semibold text-brand-700">محمد رضائی</span>
+              </p>
+            </div>
+          </div>
+          <!-- Action Buttons & Badge -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            <button
+              id="refreshBtn"
+              onclick="refreshData()"
+              title="بروزرسانی لیست"
+              class="inline-flex items-center justify-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl shadow-sm hover:bg-slate-50 hover:text-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 active:scale-95 transition-all"
+            >
+              <i id="refreshIcon" class="fa-solid fa-arrows-rotate text-sm"></i>
+              <span class="hidden sm:inline">بروزرسانی</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1 w-full"
+    >
+      <!-- Welcome & Info Banner -->
+      <div
+        class="bg-gradient-to-r from-slate-900 via-slate-800 to-brand-900 rounded-2xl p-5 sm:p-6 text-white shadow-lg mb-6 relative overflow-hidden"
+      >
+        <div
+          class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4"
+        >
+          <div>
+            <h2 class="text-lg sm:text-xl">
+              سامانه سازماندهی و پایش پیوندهای پایان‌نامه
+            </h2>
+            <p
+              class="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed"
+            >
+              این وب‌اپلیکیشن با بارگیری خودکار فایل
+              <code
+                class="bg-white/20 px-1.5 py-0.5 rounded text-amber-200 text-xs"
+                >sites.txt</code
+              >، تمام منابع و مقالات دانشگاهی استخراج شده را طبقه‌بندی کرده و
+              دسترسی سریع به پایگاه‌های علمی را فراهم می‌سازد.
+            </p>
+          </div>
+
+          <!-- Quick Stats Cards -->
+          <div class="grid grid-cols-2 gap-2 sm:gap-3 shrink-0 text-center">
+            <div
+              class="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-3 min-w-[100px]"
+            >
+              <span
+                class="block text-2xl font-extrabold text-white"
+                id="statTotalCount"
+                >0</span
+              >
+              <span class="text-[11px] text-slate-300 font-medium"
+                >کل منابع</span
+              >
+            </div>
+            <div
+              class="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-3 min-w-[100px]"
+            >
+              <span
+                class="block text-2xl font-extrabold text-amber-300"
+                id="statPageCount"
+                >0</span
+              >
+              <span class="text-[11px] text-slate-300 font-medium">صفحات</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls Section: Search & Actions -->
+      <div
+        class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/80 mb-6 flex flex-col md:flex-row items-center justify-between gap-4"
+      >
+        <!-- Search Box -->
+        <div class="relative w-full md:w-96">
+          <div
+            class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400"
+          >
+            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+          </div>
+          <input
+            type="text"
+            id="searchInput"
+            oninput="handleSearch()"
+            placeholder="جستجو در مقالات، دامنه یا URL..."
+            class="w-full pr-10 pl-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 focus:bg-white"
+          />
+          <button
+            id="clearSearchBtn"
+            onclick="clearSearch()"
+            class="hidden absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 hover:text-slate-600"
+          >
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Content List Container -->
+      <div id="contentContainer" class="space-y-3 min-h-[350px]">
+        <!-- Skeleton or Articles will be injected here via JavaScript -->
+      </div>
+
+      <!-- Pagination Bar -->
+      <div
+        id="paginationContainer"
+        class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm"
+      >
+        <div
+          class="text-xs sm:text-sm text-slate-600 font-medium"
+          id="paginationInfo"
+        >
+          در حال محاسبه...
+        </div>
+
+        <div class="flex items-center gap-1.5" id="paginationButtons">
+          <!-- Dynamic Page Buttons -->
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-5 mt-8">
+      <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+        <p class="font-medium">
+          پایگاه مرجع مدیریت لینک‌ها و مقالات پژوهشی پایان‌نامه MBA
+        </p>
+        <p class="mt-1 text-slate-400">
+          طراحی و پیاده‌سازی شده برای پژوهشگر:
+          <span class="text-slate-600 font-semibold">محمد رضائی</span> • تمام
+          حقوق محفوظ است.
+        </p>
+      </div>
+    </footer>
+
+    <div
+      id="toastContainer"
+      class="fixed bottom-5 left-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"
+    ></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
